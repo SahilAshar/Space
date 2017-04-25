@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include "Sound.h"
 #include "DAC.h"
-
+#include "tm4c123gh6pm.h"
 const uint8_t shoot[4080] = {
   129, 99, 103, 164, 214, 129, 31, 105, 204, 118, 55, 92, 140, 225, 152, 61, 84, 154, 184, 101, 
   75, 129, 209, 135, 47, 94, 125, 207, 166, 72, 79, 135, 195, 118, 68, 122, 205, 136, 64, 106, 
@@ -1136,35 +1136,59 @@ const uint8_t highpitch[1802] = {
   147, 103, 91, 10, 13, 45, 68, 127, 158, 163, 174, 254, 212, 200, 154, 101, 90, 42, 5, 42, 
   67, 119, 148, 166, 164, 238, 223, 202, 174, 112, 96, 78, 0, 34, 54, 99, 143, 160, 166, 183, 
   250, 207};
-
-void Sound_Init(void){
-// write this
+void DisableInterrupts(void); // Disable interrupts
+void EnableInterrupts(void);  // Enable interrupts
+void WaitForInterrupt(void);
+uint8_t data;
+	void Sound_Init(void){
+	DAC_Init();
+	NVIC_ST_CTRL_R = 0;         // disable SysTick during setup
+  NVIC_ST_RELOAD_R = 7256;		// 11.025kHz
+  NVIC_ST_CURRENT_R = 0;      // any write to current clears it
+	NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF) | 0x40000000; //sets priority level 2
+	NVIC_ST_CTRL_R = 0x07; 			//enables interrupts
+	
 };
 void Sound_Play(const uint8_t *pt, uint32_t count){
-// write this
+	for(int i=0;i<count-1;i++){
+		data=*pt;
+		WaitForInterrupt();
+		pt++;
+	}
+	
 };
 void Sound_Shoot(void){
-// write this
+	Sound_Play(shoot, 4080);
 };
 void Sound_Killed(void){
-// write this
+	Sound_Play(invaderkilled, 3377);
 };
 void Sound_Explosion(void){
-// write this
+	Sound_Play(explosion, 2000);
 };
 
 void Sound_Fastinvader1(void){
-// write this
+	Sound_Play(fastinvader1, 982);
+	
 };
 void Sound_Fastinvader2(void){
-// write this
+	Sound_Play(fastinvader2, 1042);
 };
 void Sound_Fastinvader3(void){
-// write this
+	Sound_Play(fastinvader3, 1054);
 };
 void Sound_Fastinvader4(void){
-// write this
+	Sound_Play(fastinvader4, 1098);
 };
 void Sound_Highpitch(void){
-// write this
+	Sound_Play(highpitch, 1802);
+
+};
+
+void SysTick_Handler (void){
+	GPIO_PORTB_DATA_R=data;
+}
+
+
+void Boss_ThemeSong (void){
 };

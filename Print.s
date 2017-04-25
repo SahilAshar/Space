@@ -8,7 +8,11 @@
 ; This driver assumes two low-level LCD functions
 ; ST7735_OutChar   outputs a single 8-bit ASCII character
 ; ST7735_OutString outputs a null-terminated string 
-
+number equ 9999
+thousand equ 12
+hundred equ 8
+ten equ 4
+unit equ 0
     IMPORT   ST7735_OutChar
     IMPORT   ST7735_OutString
     EXPORT   LCD_OutDec
@@ -16,7 +20,7 @@
 
     AREA    |.text|, CODE, READONLY, ALIGN=2
     THUMB
-
+	preserve8
   
 
 ;-----------------------LCD_OutDec-----------------------
@@ -25,7 +29,25 @@
 ; Output: none
 ; Invariables: This function must not permanently modify registers R4 to R11
 LCD_OutDec
-
+	push {r4, lr}
+	mov r2, #10				;divisor
+	mov r4, #0				;counter
+again	
+	udiv r3, r0, r2 
+	mul r1, r3, r2
+	sub r1, r0, r1
+	push {r1, r2}			;pushing a digit onto the stack
+	add r4, r4, #1
+	mov r0, r3
+	cmp r0, #0				;if the quotient isn't yet zero, keep dividing
+	bne again	
+more	
+	pop{r0, r2}
+	add r0, r0, #0x30
+	bl ST7735_OutChar		;outputs an ASCII character
+	subs r4, r4, #1
+	bne more
+	pop{r4, lr}
 
       BX  LR
 ;* * * * * * * * End of LCD_OutDec * * * * * * * *
@@ -43,7 +65,71 @@ LCD_OutDec
 ;       R0>9999, then output "*.*** "
 ; Invariables: This function must not permanently modify registers R4 to R11
 LCD_OutFix
+	push{r4, lr}
+	ldr r4, =number
+	cmp r0, r4
+	bhi stars
+	sub sp, sp, #16
+	mov r2, #10				;divisor
+	mov r4, #4				;counter
+	
+	udiv r3, r0, r2 
+	mul r1, r3, r2
+	sub r1, r0, r1
+	str r1, [sp, #thousand]	;store thousandth digit on stack			
+	mov r0, r3
+	udiv r3, r0, r2 
+	mul r1, r3, r2
+	sub r1, r0, r1
+	str r1, [sp, #hundred]	;store hundredth digit on stack
+	mov r0, r3
+	udiv r3, r0, r2 
+	mul r1, r3, r2
+	sub r1, r0, r1
+	str r1, [sp, #ten]		;store tenth digit on stack
+	mov r0, r3
+	udiv r3, r0, r2 
+	mul r1, r3, r2
+	sub r1, r0, r1
+	str r1, [sp, #unit]		;store unit digit on stack
+	mov r0, r3
+	
 
+	ldr r0, [sp]
+	add r0, r0, #0x30
+	bl ST7735_OutChar		;outputs an ASCII character
+	add sp, sp, #4
+	mov r0, #0x2e
+	bl ST7735_OutChar
+	ldr r0, [sp]
+	add r0, r0, #0x30
+	bl ST7735_OutChar
+	add sp, sp, #4
+	ldr r0, [sp]
+	add r0, r0, #0x30
+	bl ST7735_OutChar
+	add sp, sp, #4
+	ldr r0, [sp]
+	add r0, r0, #0x30
+	bl ST7735_OutChar
+	add sp, sp, #4
+	b exit
+	
+stars						;outputs *.*** if greater than 9999
+	mov r0, #0x2a
+	bl ST7735_OutChar
+	mov r0, #0x2e
+	bl ST7735_OutChar
+	mov r0, #0x2a
+	bl ST7735_OutChar
+	mov r0, #0x2a
+	bl ST7735_OutChar
+	mov r0, #0x2a
+	bl ST7735_OutChar
+	 
+	 
+exit	 
+	 pop{r4, pc}
      BX   LR
  
      ALIGN

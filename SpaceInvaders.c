@@ -191,7 +191,6 @@ const unsigned short Bunker0[] = {
 int main(void){
   TExaS_Init();  // set system clock to 80 MHz
   Random_Init(1);
-
   Output_Init();
   ST7735_FillScreen(0x0000);            // set screen to black
   
@@ -220,7 +219,12 @@ int main(void){
   LCD_OutDec(1234);
   while(1){
   }
-
+		
+	
+	
+	
+	
+	
 }
 
 
