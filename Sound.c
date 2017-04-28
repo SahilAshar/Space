@@ -1145,7 +1145,7 @@ uint8_t data;
 	NVIC_ST_CTRL_R = 0;         // disable SysTick during setup
   NVIC_ST_RELOAD_R = 7256;		// 11.025kHz
   NVIC_ST_CURRENT_R = 0;      // any write to current clears it
-	NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF) | 0x40000000; //sets priority level 2
+	NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF) | 0x80000000; //sets priority level 4
 	NVIC_ST_CTRL_R = 0x07; 			//enables interrupts
 	
 };

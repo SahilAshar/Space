@@ -4,9 +4,53 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 C:\Users\quinn_000\Desktop\Final Lab\lab10-ashar-and-collins\SpaceInvaders.uvproj
-Project File Date:  04/24/2017
+Project File Date:  04/26/2017
 
 <h2>Output:</h2>
-</pre>
-</body>
-</html>
+Build target 'SpaceInvaders'
+compiling SpaceInvaders.c...
+SpaceInvaders.c(215): warning:  #223-D: function "DAC_Init" declared implicitly
+        DAC_Init();
+SpaceInvaders.c(216): warning:  #223-D: function "ADC_Init89" declared implicitly
+        ADC_Init89();
+SpaceInvaders.c(205): warning:  #177-D: variable "up_down" was declared but never referenced
+    int up_down;
+SpaceInvaders.c(206): warning:  #177-D: variable "left_right" was declared but never referenced
+        int left_right = ADCvalue[0];
+SpaceInvaders.c(207): warning:  #177-D: variable "screen_num" was declared but never referenced
+        int screen_num = 0;
+SpaceInvaders.c(208): warning:  #177-D: variable "menu_num" was declared but never referenced
+        int menu_num = 0;
+SpaceInvaders.c(209): warning:  #177-D: variable "playMenuString" was declared but never referenced
+        char playMenuString[] = "PLAY";
+SpaceInvaders.c(210): warning:  #177-D: variable "diffiMenuString" was declared but never referenced
+        char diffiMenuString[] = "DIFFICULTY";
+SpaceInvaders.c(211): warning:  #177-D: variable "highscoreMenuString" was declared but never referenced
+        char highscoreMenuString[] = "HIGH SCORES";
+SpaceInvaders.c(253): warning:  #223-D: function "ADC_In89" declared implicitly
+        ADC_In89(ADCvalue);
+SpaceInvaders.c: 10 warnings, 0 errors
+linking...
+Program Size: Code=4544 RO-data=4680 RW-data=460 ZI-data=1180  
+".\SpaceInvaders.axf" - 0 Error(s), 10 Warning(s).
+Load "C:\\Users\\quinn_000\\Desktop\\Final Lab\\lab10-ashar-and-collins\\SpaceInvaders.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+ers\\quinn_000\\Desktop\\Final Lab\\lab10-ashar-and-collins\\SpaceInvaders.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+
+.\SpaceInvaders.axf: Error: L6200E: Symbol move multiply defined (by movement.o and spaceinvaders.o).
+.\SpaceInvaders.axf: Error: L6200E: Symbol ADCvalue multiply defined (by movement.o and spaceinvaders.o).
+.\SpaceInvaders.axf: Error: L6200E: Symbol Delay100ms multiply defined (by movement.o and spaceinvaders.o).
+.\SpaceInvaders.axf: Error: L6200E: Symbol left_right multiply defined (by movement.o and spaceinvaders.o).
+.\SpaceInvaders.axf: Error: L6200E: Symbol main multiply defined (by movement.o and spaceinvaders.o).
+Not enough information to list image symbols.
+Not enough information to list the image map.
+Finished: 2 information, 0 warning and 14 error messages.
+".\SpaceInvaders.axf" - 14 Error(s), 6 Warning(s).
+Target not created

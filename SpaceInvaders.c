@@ -55,12 +55,25 @@
 #include "Random.h"
 #include "TExaS.h"
 #include "ADC.h"
+#include "DAC.h"
+#include "Sound.h"
+
+#define menu_screen 0
+#define diff_screen 1
+#define highscore_screen 2
+#define play_screen 3
 
 
+#define menu_play 0
+#define menu_diff 1
+#define menu_high 2
+
+uint32_t ADCvalue[2];
+uint32_t move=52;
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void Delay100ms(uint32_t count); // time delay in 0.1 seconds
-
+void left_right_move (void);
 
 // *************************** Images ***************************
 // enemy ship that starts at the top of the screen (arms/mouth closed)
@@ -189,43 +202,137 @@ const unsigned short Bunker0[] = {
 // *************************** Capture image dimensions out of BMP**********
 
 int main(void){
-  TExaS_Init();  // set system clock to 80 MHz
+  int up_down;
+	int left_right = ADCvalue[0];
+	int screen_num = 0;
+	int menu_num = 0;
+	char playMenuString[] = "PLAY";
+	char diffiMenuString[] = "DIFFICULTY";
+	char highscoreMenuString[] = "HIGH SCORES";
+	TExaS_Init();  // set system clock to 80 MHz
   Random_Init(1);
   Output_Init();
-  ST7735_FillScreen(0x0000);            // set screen to black
-  
-  ST7735_DrawBitmap(52, 159, PlayerShip0, 18,8); // player ship middle bottom
-  ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
+	DAC_Init();
+	ADC_Init89();
+	ST7735_FillScreen(0x0000);            // set screen to black
 
-  ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
-  ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
-  ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
-  ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
-  ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
-  ST7735_DrawBitmap(100, 9, SmallEnemy30pointB, 16,10);
+//ST7735_DrawString(3, 4, playMenuString, 0xFFE0);	//PLAY STRING
+
+//ST7735_DrawString(3, 6, diffiMenuString, 0xFFE0);	//DIFFI STRING
+
+//ST7735_DrawString(3, 8, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
+//  
+//  ST7735_DrawBitmap(52, 159, PlayerShip0, 20,8); // player ship middle bottom
+//  ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
+
+//  ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
+//  ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
+//  ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
+//  ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
+//  ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
+//  ST7735_DrawBitmap(100, 9, SmallEnemy30pointB, 16,10);
 
 
-  Delay100ms(50);              // delay 5 sec at 80 MHz
+//  Delay100ms(50);              // delay 5 sec at 80 MHz
 
 
-  ST7735_FillScreen(0x0000);            // set screen to black
-  ST7735_SetCursor(1, 1);
-  ST7735_OutString("GAME OVER");
-  ST7735_SetCursor(1, 2);
-  ST7735_OutString("Nice try,");
-  ST7735_SetCursor(1, 3);
-  ST7735_OutString("Earthling!");
-  ST7735_SetCursor(2, 4);
-  LCD_OutDec(1234);
+//  ST7735_FillScreen(0x0000);            // set screen to black
+//  ST7735_SetCursor(1, 1);
+//  ST7735_OutString("GAME OVER");
+//  ST7735_SetCursor(1, 2);
+//  ST7735_OutString("Nice try,");
+//  ST7735_SetCursor(1, 3);
+//  ST7735_OutString("Earthling!");
+//  ST7735_SetCursor(2, 4);
+//  LCD_OutDec(1234);
   while(1){
-  }
-		
-	
-	
-	
-	
-	
+		left_right_move();
+	}
 }
+void left_right_move (void){
+	ADC_In89(ADCvalue);
+	while((ADCvalue[0]<1500)&&(move>0)){
+		move--;
+		ST7735_DrawBitmap(move, 159, PlayerShip0, 18,8);
+	}
+	while(ADCvalue[0]>3500&&(move<109)){
+		move++;
+		ST7735_DrawBitmap(move, 159, PlayerShip0, 18,8);
+	}
+	while((ADCvalue[0]<3500)||(ADCvalue[0]>1500)){
+		ST7735_DrawBitmap(move, 159, PlayerShip0, 18,8);
+	}
+}
+
+
+
+//ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+//		
+//		if(screen_num == menu_screen && menu_num == menu_play && up_down<1500){
+//			menu_num = menu_diff;
+//		}
+
+//		ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+//		
+//		if(screen_num == menu_screen && menu_num == menu_diff && up_down<1500){
+//			menu_num = menu_high;
+//		} 
+//		
+//		ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+//		
+//		if(screen_num == menu_screen && menu_num == menu_diff && up_down>3500){
+//			menu_num = menu_play;
+//		}
+//		
+//		ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+
+//		if(screen_num == menu_screen && menu_num == menu_high && up_down>3500){
+//			menu_num = menu_diff;
+//		}
+//		
+//		ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+
+//		if(screen_num == menu_screen && menu_num == menu_play && (up_down>2000 && up_down<2100)){
+//			//draw black box
+//			//draw play pic
+//			ST7735_DrawString(3, 4, playMenuString, 0x0000);	//PLAY STRING
+//			Delay100ms(5);
+//			ST7735_DrawString(3, 4, playMenuString, 0xFFE0);	//PLAY STRING
+//			Delay100ms(5);
+
+//		}
+//		
+//		ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+
+//		if(screen_num == menu_screen && menu_num == menu_diff && (up_down>2000 && up_down<2100)){
+//			//draw black box
+//			//draw difficulty pic
+//			ST7735_DrawString(3, 6, diffiMenuString, 0x0000);	//DIFFI STRING
+//			Delay100ms(5);
+//			ST7735_DrawString(3, 6, diffiMenuString, 0xFFE0);	//DIFFI STRING
+//			Delay100ms(5);
+//		}
+//		
+//		ADC_In89(ADCvalue);
+//		up_down = ADCvalue[1];
+
+//		if(screen_num == menu_screen && menu_num == menu_high && (up_down>2000 && up_down<2100)){
+//			//draw black box
+//			//draw highscore pic
+//			ST7735_DrawString(3, 8, highscoreMenuString, 0x0000);	//HIGH SCORE STRING
+//			Delay100ms(5);
+//			ST7735_DrawString(3, 8, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
+//			Delay100ms(5);
+//		}
+			
+			
+	
 
 
 // You can use this timer only if you learn how it works
@@ -239,3 +346,20 @@ void Delay100ms(uint32_t count){uint32_t volatile time;
     count--;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
