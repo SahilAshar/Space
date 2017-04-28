@@ -69,12 +69,13 @@
 #define menu_high 2
 
 uint32_t ADCvalue[2];
-uint32_t move=52;
+uint32_t hori=52;
+uint32_t verti=159;
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void Delay100ms(uint32_t count); // time delay in 0.1 seconds
 void left_right_move (void);
-
+void Delay50ms (uint32_t count);
 // *************************** Images ***************************
 // enemy ship that starts at the top of the screen (arms/mouth closed)
 // width=16 x height=10
@@ -185,6 +186,11 @@ const unsigned short PlayerShip0[] = {
 
 };
 
+const unsigned short black[]={
+0x0000, 0x0000, 0x0000
+};
+
+
 // small shield floating in space to cover the player's ship from enemy fire (undamaged)
 // width=18 x height=5
 const unsigned short Bunker0[] = {
@@ -251,17 +257,40 @@ int main(void){
 }
 void left_right_move (void){
 	ADC_In89(ADCvalue);
-	while((ADCvalue[0]<1500)&&(move>0)){
-		move--;
-		ST7735_DrawBitmap(move, 159, PlayerShip0, 18,8);
+	if((ADCvalue[0]<1500)&&(hori>0)){
+		hori--;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
 	}
-	while(ADCvalue[0]>3500&&(move<109)){
-		move++;
-		ST7735_DrawBitmap(move, 159, PlayerShip0, 18,8);
+	else if(ADCvalue[0]>3500&&(hori<109)){
+		hori++;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
 	}
-	while((ADCvalue[0]<3500)||(ADCvalue[0]>1500)){
-		ST7735_DrawBitmap(move, 159, PlayerShip0, 18,8);
+	else if((ADCvalue[1]<3500)||(ADCvalue[0]>1500)){
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
 	}
+	ADC_In89(ADCvalue);
+	if((ADCvalue[1]<1500)&&(verti<159)){
+		verti++;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+	else if(ADCvalue[1]>3500&&(verti>8)){
+		verti--;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		ST7735_DrawBitmap(hori, verti+1, black, 18,0);
+		Delay50ms(1);
+	}
+	else if((ADCvalue[1]<3500)||(ADCvalue[0]>1500)){
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+
+
+
+
 }
 
 
@@ -337,9 +366,9 @@ void left_right_move (void){
 
 // You can use this timer only if you learn how it works
 
-void Delay100ms(uint32_t count){uint32_t volatile time;
+void Delay50ms(uint32_t count){uint32_t volatile time;
   while(count>0){
-    time = 727240;  // 0.1sec at 80 MHz
+    time = 300000;  // 0.1sec at 80 MHz
     while(time){
 	  	time--;
     }
