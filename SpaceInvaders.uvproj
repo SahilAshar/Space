@@ -470,6 +470,36 @@
               <FileType>1</FileType>
               <FilePath>.\engine.c</FilePath>
             </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>Globals.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Globals.c</FilePath>
+            </File>
+            <File>
+              <FileName>moving.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\moving.c</FilePath>
+            </File>
+            <File>
+              <FileName>movement.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\movement.c</FilePath>
+            </File>
+            <File>
+              <FileName>Images.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Images.c</FilePath>
+            </File>
+            <File>
+              <FileName>playEngine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\playEngine.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

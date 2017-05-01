@@ -7,3 +7,4 @@
 .\spaceinvaders.o: ADC.h
 .\spaceinvaders.o: DAC.h
 .\spaceinvaders.o: Sound.h
+.\spaceinvaders.o: Globals.h

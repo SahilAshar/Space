@@ -1185,9 +1185,9 @@ void Sound_Highpitch(void){
 
 };
 
-void SysTick_Handler (void){
+/* void SysTick_Handler (void){
 	GPIO_PORTB_DATA_R=data;
-}
+} */
 
 
 void Boss_ThemeSong (void){

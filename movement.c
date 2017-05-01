@@ -2,6 +2,46 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 #include "ST7735.h"
+#include "Globals.h"
+#include "Images.h"
+
+void ADC_In89(int data[2]);
+
+
+
+void shipMovement(void){
+	ADC_In89(ADCvalue);
+	if((ADCvalue[0]<1500)&&(hori>0)){
+		hori--;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+	else if(ADCvalue[0]>3500&&(hori<109)){
+		hori++;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+	else if((ADCvalue[1]<3500)||(ADCvalue[0]>1500)){
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+	ADC_In89(ADCvalue);
+	if((ADCvalue[1]<1500)&&(verti<159)){
+		verti++;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+	else if(ADCvalue[1]>3500&&(verti>8)){
+		verti--;
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		ST7735_DrawBitmap(hori, verti+1, black, 16,1);
+		Delay50ms(1);
+	}
+	else if((ADCvalue[1]<3500)||(ADCvalue[0]>1500)){
+		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		Delay50ms(1);
+	}
+}
 
 
 

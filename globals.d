@@ -1,0 +1,9 @@
+.\globals.o: Globals.c
+.\globals.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\globals.o: tm4c123gh6pm.h
+.\globals.o: ST7735.h
+.\globals.o: Random.h
+.\globals.o: TExaS.h
+.\globals.o: ADC.h
+.\globals.o: DAC.h
+.\globals.o: Sound.h
