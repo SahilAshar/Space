@@ -51,8 +51,12 @@ int ADCvalue[2]  = {0,0};
 int screen_num = 0;
 
 int up_down;
+int left_right;
 long buttonPress;
 int testC = 0;
+
+int shotFired_flag = 0;
+int shotFired_ticks = 160;
 
 int hori=52;
 int verti=159;
@@ -64,4 +68,5 @@ void init_All(void){
 	DAC_Init();
 	ADC_Init89();
 	SysTick_Init();
+	Timer3_Init();
 }

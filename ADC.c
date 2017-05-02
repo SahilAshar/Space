@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
+#include "movement.h"
 #include "Globals.h"
 
 
@@ -61,7 +62,11 @@ void SysTick_Init(void){
 void SysTick_Handler(void){
 	ADC_In89(ADCvalue);
 	up_down = ADCvalue[1]; 
+	left_right = ADCvalue[0];
 	buttonPress = GPIO_PORTC_DATA_R&0x10;
+//	if(screen_num == play_screen){
+//		shipMovement();
+//	}
 }
 
 
@@ -82,5 +87,36 @@ void EdgeInterrupt_Init(void){
 
 void GPIOPortC_Handler(void){
 	GPIO_PORTC_ICR_R = 0x10;	//acknowledge flag4
+	shotFired_flag = 1;
+}
+
+void Timer3_Init(void){
+	SYSCTL_RCGCTIMER_R |= 0x0008;	// 0) activate timer3
+	TIMER3_CTL_R = 0x00000000;		// 1) disable timer3 during setup
+	TIMER3_CFG_R = 0x00000000;		// 2) configure 32 bit timer mode
+	TIMER3_TAMR_R = 0x00000002;		// 3) configure for periodic mode
+	TIMER3_TAILR_R = 2000000-1;		// 4) reload value
+	TIMER3_TAPR_R = 0;						// 5) 12.5ns timer3
+	TIMER3_ICR_R = 0x00000001;		// 6) clear timer3 timeout flag
+	TIMER3_IMR_R |= 0x00000001;		// 7) arm timeout interrupt
+	NVIC_PRI8_R = (NVIC_PRI8_R&0x00FFFFFF) | 0x40000000;	// 8) priority 2
+	NVIC_EN1_R = 1<<(35-32);			// 9) enable IRQ 35 in NVIC
+	TIMER3_CTL_R |= 0x00000001;		// 10) enable timer3
+}
+
+void Timer3A_Handler(void){
+	TIMER3_ICR_R = 0x00000001;
+	if(shotFired_flag == 1 && shotFired_ticks==160){
+		generateBullet(hori, verti);
+		testC++;
+	}
+	if(shotFired_flag == 1 && shotFired_ticks>0){
+		moveBullet();
+		shotFired_ticks--;
+	}
+	if(shotFired_flag == 1 && shotFired_ticks == 0){
+		shotFired_ticks = 160;
+		shotFired_flag = 0;
+	}
 }
 

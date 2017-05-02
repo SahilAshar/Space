@@ -22,6 +22,7 @@ extern void generatePlay(void);
 extern void checkSN(void);
 
 extern int up_down;
+extern int left_right;
 extern long buttonPress;
 
 extern int testC;
@@ -31,4 +32,9 @@ extern void init_All(void);
 extern int hori;
 extern int verti;
 
+extern int shotFired_flag;
+extern int shotFired_ticks;
+
 extern void startEngine(void);
+extern void moveBullet(void);
+extern void generateBullet(int x, int y);

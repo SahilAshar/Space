@@ -11,7 +11,7 @@ struct bullet {
 	uint32_t y;
 };
 struct bullet bullet_t[1]={
-	{52,70}
+	{0,0}
 };
 const unsigned short bullets[]={
 0x0000,0x0000,0x0000, 0x0000, 0x0000, 0x079f, 0x079f, 0x079f, 0x079f, 0x079f, 0x0000
@@ -37,6 +37,12 @@ invade_s matrix [36]={
 void generateShip(void){
 	ST7735_DrawBitmap(52, 159, PlayerShip0, 18,8); // player ship middle bottom
 	ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
+}
+
+void generateBullet(int x, int y){
+	//ST7735_DrawPixel(x+8, y-8, 0xFFFF);
+	bullet_t[0].x = x+8;
+	bullet_t[0].y = y-8;
 }
 void generateAliens(void){
   ST7735_DrawBitmap(0, 9, SmallEnemy30pointA, 16,10);
@@ -99,7 +105,12 @@ void startEngine(void){
 	}
 }
 
-	
+void moveBullet(void){
+	bullet_t[0].y--;
+	ST7735_FillRect(bullet_t[0].x,bullet_t[0].y,3,11,0xFFFF);
+	ST7735_FillRect(bullet_t[0].x,bullet_t[0].y+1,3,11,0x0000);
+}
+		
 
 void alien_movement (void){
 	uint32_t flag=0;
