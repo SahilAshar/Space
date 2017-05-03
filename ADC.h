@@ -5,4 +5,5 @@ extern void ADC_Init89(void);
 extern void SysTick_Init(void);
 extern void EdgeInterrupt_Init(void);
 extern void Timer3_Init(void);
+extern void getADCInfo(void);
 

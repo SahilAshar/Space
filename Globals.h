@@ -24,8 +24,10 @@ extern void checkSN(void);
 extern int up_down;
 extern int left_right;
 extern long buttonPress;
+extern int frameFlag;
 
 extern int testC;
+extern int gameReady;
 
 extern void init_All(void);
 

@@ -11,7 +11,9 @@
       m = Random32()%60; // returns a random number from 0 to 59
       p = Random();      // returns a random number 0 to 255
 */
-void Random_Init(uint32_t seed);
+
+#include <stdint.h>
+extern void Random_Init(uint32_t seed);
 
 uint32_t Random(void);
 uint32_t Random32(void);

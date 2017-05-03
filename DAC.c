@@ -16,6 +16,9 @@
 uint32_t i=0;
 uint32_t cs=0;
 uint32_t flag=0;
+void (*PeriodicTask)(void);
+void tempointerrupt (void);
+void noteinterrupt (void);
 void WaitForInterrupt(void);
 void play_menu_music(void);
 uint8_t dac_wave[64]={127, 139, 152, 164, 176, 187, 198, 208, 217, 225, 233, 239, 244, 249, 252, 253,
@@ -80,13 +83,14 @@ struct music menu_song[34]={
 {B,20000000},
 {ASharp,20000000}};
 
-void Timer0_Init(uint32_t period){
+void Timer0_Init(void(*task)(void), uint32_t period){
   SYSCTL_RCGCTIMER_R |= 0x01;   // 0) activate TIMER0         // user function
+	PeriodicTask = task;
 	TIMER0_CTL_R = 0x00000000;    // 1) disable TIMER0A during setup
   TIMER0_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
   TIMER0_TAMR_R = 0x00000002;   // 3) configure for periodic mode, default down-count settings
   TIMER0_TAILR_R = period-1;    // 4) reload value
-  TIMER0_TAPR_R = 0;            // 5) bus clock resolution
+  TIMER0_TAPR_R = 0;            // 5 bus clock resolution
   TIMER0_ICR_R = 0x00000001;    // 6) clear TIMER0A timeout flag
   TIMER0_IMR_R = 0x00000001;    // 7) arm timeout interrupt
   NVIC_PRI4_R = (NVIC_PRI4_R&0x00FFFFFF)|0x80000000; // 8) priority 4
@@ -95,9 +99,8 @@ void Timer0_Init(uint32_t period){
   NVIC_EN0_R = 1<<19;           // 9) enable IRQ 19 in NVIC
   TIMER0_CTL_R = 0x00000001;    // 10) enable TIMER0A
 }
-
-void Timer0A_Handler(void){
-  if(cs+1==34){
+void noteinterrupt (void){
+if(cs+1==34){
 		cs=0;
 	}
 		DAC_Out(dac_wave[i]);
@@ -105,12 +108,16 @@ void Timer0A_Handler(void){
 		if (i == 64){
 			i = 0;
 	}
-	Timer0_Init(menu_song[cs].note);
+	Timer0_Init(noteinterrupt, menu_song[cs].note);
+}
+void Timer0A_Handler(void){
+	(*PeriodicTask)();
 	TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge TIMER0A timeout
 }
 
-void Timer1_Init(uint32_t period){
+void Timer1_Init(void(*PeriodicTask)(void),uint32_t period){
   SYSCTL_RCGCTIMER_R |= 0x02;   // 0) activate TIMER1         // user function
+	PeriodicTask=*tempointerrupt;
 	TIMER1_CTL_R = 0x00000000;    // 1) disable TIMER1A during setup
   TIMER1_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
   TIMER1_TAMR_R = 0x00000002;   // 3) configure for periodic mode, default down-count settings
@@ -124,8 +131,7 @@ void Timer1_Init(uint32_t period){
   NVIC_EN0_R = 1<<21;           // 9) enable IRQ 21 in NVIC
   TIMER1_CTL_R = 0x00000001;    // 10) enable TIMER1A
 }
-
-void Timer1A_Handler(void){
+void tempointerrupt (void){
 	if(cs+1==34){
 		cs=0;
 	}
@@ -133,6 +139,10 @@ void Timer1A_Handler(void){
 		cs++;
 	}
 	flag=1;
+
+}
+void Timer1A_Handler(void){
+	(*PeriodicTask)();
 	TIMER1_ICR_R = TIMER_ICR_TATOCINT;// acknowledge TIMER1A timeout
               // execute user task
 	
@@ -143,8 +153,8 @@ void play_menu_music (void){
 		cs=0;
 	}
 	flag=0;
-	Timer0_Init(menu_song[cs].note);
-	Timer1_Init(menu_song[cs].tempo);
+	Timer0_Init(noteinterrupt, menu_song[cs].note);
+	Timer1_Init(tempointerrupt, menu_song[cs].tempo);
 	while(flag==0){
 		WaitForInterrupt();
 	}

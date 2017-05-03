@@ -38,7 +38,8 @@ void generateMenu(void){
 	ST7735_DrawString(3, 6, diffiMenuString, 0xFFE0);	//DIFFI STRING
 	ST7735_DrawString(3, 8, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
 	
-	while(1){		
+	while(1){	
+			
 			
 			if(menu_num == menu_play && up_down<1500){
 				menu_num = menu_diff;
