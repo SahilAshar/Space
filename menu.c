@@ -23,7 +23,10 @@ char diffiMed[] = "MEDIUM";
 char diffiHard[] = "HARD";
 char diffiBack[] = "BACK";
 
+char gameOverMsg[] = "GAME OVER";
+char scoreMsg[] = "SCORE";
 void ADC_In89(int data[2]);
+void outHighScore(int hscore);
 
 //int size33;
 //size = ADCvalue[0];
@@ -193,6 +196,48 @@ void generatePlay(void){
 	
 }
 
+void generateGameOver(void){
+	Output_Init();
+	ST7735_FillScreen(0x0000);
+	ST7735_DrawString(6, 6, gameOverMsg, 0xFFE0);	//GAMEOVER STRING
+	Delay100ms(20);
+	ST7735_FillScreen(0x0000);
+	ST7735_DrawString(6, 6, scoreMsg, 0xFFE0);	//GAMEOVER STRING
+	outHighScore(score);
+}
+
+void outHighScore(int hscore){
+
+	char score[3] = {'0','0','0'};
+	int hex_base = 0x30;
+	int hex_base2 = 0x00;
+	int dummy_score = hscore;
+
+	
+
+	dummy_score = hscore/100;
+	hex_base2 = hex_base+dummy_score;
+	score[0] = hex_base2;
+
+	dummy_score = dummy_score*100;
+	hscore = hscore - dummy_score;
+	dummy_score = hscore;
+
+	dummy_score = hscore/10;
+	hex_base2 = hex_base+dummy_score;
+	score[1] = hex_base2;
+
+	dummy_score = dummy_score*10;
+	hscore = hscore - dummy_score;
+	dummy_score = hscore;
+
+	hex_base2 = hex_base+dummy_score;
+	score[2] = hex_base2;
+
+	ST7735_DrawString(6, 8, score, 0xFFE0); // draws score
+}
+	
+
 
 void checkSN(void){
 	
@@ -207,6 +252,9 @@ void checkSN(void){
 	}
 	else if(screen_num == play_screen){
 		generatePlay();
+	}
+	else if(screen_num == gameOver_screen){
+		generateGameOver();
 	}
 }
 	

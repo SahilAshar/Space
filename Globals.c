@@ -58,10 +58,13 @@ int testC = 0;
 int shotFired_flag = 0;
 int shotFired_ticks = 0;
 
+int invaderDeaths=0;
+
 int hori=52;
 int verti=159;
 int frameFlag = 0;
 int gameReady = 0;
+int score = 0;
 
 void init_All(void){
 	TExaS_Init();  // set system clock to 80 MHz

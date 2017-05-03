@@ -2,6 +2,7 @@
 #define diff_screen 1
 #define highscore_screen 2
 #define play_screen 3
+#define gameOver_screen 4
 
 
 extern int ADCvalue[2];
@@ -36,6 +37,9 @@ extern int verti;
 
 extern int shotFired_flag;
 extern int shotFired_ticks;
+
+extern int invaderDeaths;
+extern int score;
 
 extern void startEngine(void);
 extern void moveBullet(void);

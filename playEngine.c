@@ -42,18 +42,25 @@ struct invaders{
 	uint32_t x;
 	uint32_t y;
 	uint8_t dead;
+	int value;
 	const unsigned short *pic;
 };
 
 typedef struct invaders invade_s;
 
 invade_s matrix [36]={
-{0,9,0,SmallEnemy30pointA},{20,9,0,SmallEnemy30pointA},{40,9,0,SmallEnemy30pointA},{60,9,0,SmallEnemy30pointA},{80,9,0,SmallEnemy30pointA},{100,9,0,SmallEnemy30pointA},
-{0,20,0,SmallEnemy30pointB},{20,20,0,SmallEnemy30pointB},{40,20,0,SmallEnemy30pointB},{60,20,0,SmallEnemy30pointB},{80,20,0,SmallEnemy30pointB},{100,20,0,SmallEnemy30pointB},
-{0,31,0,SmallEnemy20pointA},{20,31,0,SmallEnemy20pointA},{40,31,0,SmallEnemy20pointA},{60,31,0,SmallEnemy20pointA},{80,31,0,SmallEnemy20pointA},{100,31,0,SmallEnemy20pointA},
-{0,42,0,SmallEnemy20pointB},{20,42,0,SmallEnemy20pointB},{40,42,0,SmallEnemy20pointB},{60,42,0,SmallEnemy20pointB},{80,42,0,SmallEnemy20pointB},{100,42,0,SmallEnemy20pointB},
-{0,53,0,SmallEnemy10pointA},{20,53,0,SmallEnemy10pointA},{40,53,0,SmallEnemy10pointA},{60,53,0,SmallEnemy10pointA},{80,53,0,SmallEnemy10pointA},{100,53,0,SmallEnemy10pointA},
-{0,64,0,SmallEnemy10pointB},{20,64,0,SmallEnemy10pointB},{40,64,0,SmallEnemy10pointB},{60,64,0,SmallEnemy10pointB},{80,64,0,SmallEnemy10pointB},{100,64,0,SmallEnemy10pointB},
+{0,9,0,30,SmallEnemy30pointA},{20,9,0,30,SmallEnemy30pointA},{40,9,0,30,SmallEnemy30pointA},
+{60,9,0,30,SmallEnemy30pointA},{80,9,0,30,SmallEnemy30pointA},{100,9,0,30,SmallEnemy30pointA},
+{0,20,0,30,SmallEnemy30pointB},{20,20,0,30,SmallEnemy30pointB},{40,20,0,30,SmallEnemy30pointB},
+{60,20,0,30,SmallEnemy30pointB},{80,20,0,30,SmallEnemy30pointB},{100,20,0,30,SmallEnemy30pointB},
+{0,31,0,20,SmallEnemy20pointA},{20,31,0,20,SmallEnemy20pointA},{40,31,0,20,SmallEnemy20pointA},
+{60,31,0,20,SmallEnemy20pointA},{80,31,0,20,SmallEnemy20pointA},{100,31,0,20,SmallEnemy20pointA},
+{0,42,0,20,SmallEnemy20pointB},{20,42,0,20,SmallEnemy20pointB},{40,42,0,20,SmallEnemy20pointB},
+{60,42,0,20,SmallEnemy20pointB},{80,42,0,20,SmallEnemy20pointB},{100,42,0,20,SmallEnemy20pointB},
+{0,53,0,10,SmallEnemy10pointA},{20,53,0,10,SmallEnemy10pointA},{40,53,0,10,SmallEnemy10pointA},
+{60,53,0,10,SmallEnemy10pointA},{80,53,0,10,SmallEnemy10pointA},{100,53,0,10,SmallEnemy10pointA},
+{0,64,0,10,SmallEnemy10pointB},{20,64,0,10,SmallEnemy10pointB},{40,64,0,10,SmallEnemy10pointB},
+{60,64,0,10,SmallEnemy10pointB},{80,64,0,10,SmallEnemy10pointB},{100,64,0,10,SmallEnemy10pointB},
 };
 
 void generateShip(void){
@@ -133,7 +140,11 @@ void startEngine(void){
 	generateBunkers();
 	while(1){
 		alien_movement();	
+		if(invaderDeaths == 36){
+			break;
+		}
 	}
+	checkSN();
 }
 
 void alien_movement (void){
@@ -149,8 +160,14 @@ void alien_movement (void){
 				}
 				else{
 					matrix[j].dead=1;
+					score = score+matrix[j].value;
 					flag=0;
 					shotFired_ticks = 0;
+					invaderDeaths++;
+					if(invaderDeaths == 36){
+						screen_num = gameOver_screen;
+						return;
+					}				
 				}
 			}
 		}
@@ -191,8 +208,14 @@ void alien_movement (void){
 				}
 				else{
 					matrix[j].dead=1;
+					score = score+matrix[j].value;
 					flag=0;
 					shotFired_ticks = 0;
+					invaderDeaths++;
+					if(invaderDeaths == 36){
+						screen_num = gameOver_screen;
+						return;
+					}		
 				}
 			}
 		}
@@ -239,8 +262,14 @@ void alien_movement (void){
 				}
 				else{
 					matrix[j].dead=1;
+					score = score+matrix[j].value;
 					flag=0;
 					shotFired_ticks = 0;
+					invaderDeaths++;
+					if(invaderDeaths == 36){
+						screen_num = gameOver_screen;
+						return;
+					}		
 				}
 			}
 		}
@@ -280,8 +309,14 @@ void alien_movement (void){
 				}
 				else{
 					matrix[j].dead=1;
+					score = score+matrix[j].value;
 					flag=0;
 					shotFired_ticks = 0;
+					invaderDeaths++;
+					if(invaderDeaths == 36){
+						screen_num = gameOver_screen;
+						return;
+					}		
 				}
 			}
 		}
