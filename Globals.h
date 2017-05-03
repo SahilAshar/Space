@@ -26,6 +26,7 @@ extern int up_down;
 extern int left_right;
 extern long buttonPress;
 extern int frameFlag;
+extern int diffi;
 
 extern int testC;
 extern int gameReady;
@@ -40,6 +41,7 @@ extern int shotFired_ticks;
 
 extern int invaderDeaths;
 extern int score;
+extern int deathFlag;
 
 extern void startEngine(void);
 extern void moveBullet(void);

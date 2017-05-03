@@ -10,8 +10,13 @@
 #include "Random.h"
 #include "Sound.h"
 
+#define easy 5000000
+#define medium 3000000
+#define hard 1000000
+
 void bullet_movement(void);
 void alien_bullets(void);
+int difficulty = 5000000;
 
 struct shipBullet {
 	uint32_t x;
@@ -133,14 +138,19 @@ void generateShip(void);
 void alien_movement(void);
 void generateAliens(void);
 void rightShift(void);
+void alien_bullets(void);
 
 void startEngine(void){
-	generateShip();
+	invaderDeaths = 0;
+	deathFlag = 0;
+	score = 0;
+	Timer3_Init();
+	generateShip();	
 	generateAliens();
 	generateBunkers();
 	while(1){
 		alien_movement();	
-		if(invaderDeaths == 36){
+		if(invaderDeaths == 36 || deathFlag == 1){
 			break;
 		}
 	}
@@ -202,7 +212,10 @@ void alien_movement (void){
 				}
 				alien_bullets();
 				shipMovement();
-		
+				if(deathFlag == 1){
+					screen_num = gameOver_screen;
+					return; 
+				}
 			}
 		}
 	
@@ -263,6 +276,10 @@ void alien_movement (void){
 				}
 	
 				shipMovement();
+				if(deathFlag == 1){
+					screen_num = gameOver_screen;
+					return; 
+				}
 	
 }
 	
@@ -322,6 +339,10 @@ void alien_movement (void){
 		
 				alien_bullets();
 				shipMovement();
+				if(deathFlag == 1){
+					screen_num = gameOver_screen;
+					return; 
+				}
 			}
 	}
 	
@@ -370,6 +391,8 @@ void alien_movement (void){
 		}
 				matrix[i].y+=5;
 				if(matrix[i].y>=151){
+					screen_num = gameOver_screen;
+					invaderDeaths = 36;
 					return; 
 				}
 				if(matrix[i].dead==1){
@@ -381,6 +404,10 @@ void alien_movement (void){
 				}
 	
 				shipMovement();
+				if(deathFlag == 1){
+					screen_num = gameOver_screen;
+					return; 
+				}
 	}
 }
 
@@ -402,10 +429,19 @@ void alien_bullets (void){
 	uint32_t rando;
 	rando=(Random()&0x000000FF);
 	rando=(Random()&0x000000FF);
+	if(diffi == 0){
+		difficulty = easy;
+	}
+	if(diffi == 1){
+		difficulty = medium;
+	}
+	if(diffi == 2){
+		difficulty = hard;
+	}
 	if(rando<=35){
 		z=rando;
 	}
-	Timer0_Init(bullet_movement, 3000000);
+	Timer0_Init(bullet_movement, difficulty);
 	if(((matrix[z+6].dead==1)&&(z<=29))||(z<=35&&z>=30)){
 		for(int j=0;j<6;j++){
 			if(bullet_t[j].loaded==0){
@@ -433,7 +469,13 @@ void bullet_movement (void){
 			if((bullet_t[j].y==151)&&(bullet_t[j].x<71||bullet_t[j].x>53)){
 				ST7735_FillRect(bullet_t[j].x,bullet_t[j].y,1,15,0x0000);
 			}
-		
+			
+			if(((bullet_t[j].x<hori+18)&&(bullet_t[j].x>hori))&&((bullet_t[j].y>=151)&&(bullet_t[j].y<159))){
+				ST7735_FillRect(bullet_t[j].x, bullet_t[j].y, 18, 9, 0x0000);
+				screen_num = gameOver_screen;
+				deathFlag = 1;
+				
+			}
 		}
 	}
 }

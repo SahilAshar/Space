@@ -37,4 +37,6 @@ extern const unsigned short Bunker0[];
 
 extern const unsigned short black[];
 
+extern const unsigned short SpaceLogo[];
+
 // *************************** Capture image dimensions out of BMP**********

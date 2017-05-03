@@ -54,6 +54,7 @@ int up_down;
 int left_right;
 long buttonPress;
 int testC = 0;
+int diffi = 0;
 
 int shotFired_flag = 0;
 int shotFired_ticks = 0;
@@ -65,6 +66,8 @@ int verti=159;
 int frameFlag = 0;
 int gameReady = 0;
 int score = 0;
+int deathFlag = 0;
+
 
 void init_All(void){
 	TExaS_Init();  // set system clock to 80 MHz

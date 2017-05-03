@@ -2,7 +2,9 @@
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
 #include "ST7735.h"
+#include "Images.h"
 #include "Globals.h"
+
 
 #define menu_play 0
 #define menu_diff 1
@@ -23,10 +25,15 @@ char diffiMed[] = "MEDIUM";
 char diffiHard[] = "HARD";
 char diffiBack[] = "BACK";
 
+char diffSet[] = "DIFFICULTY SET TO";
+
+
 char gameOverMsg[] = "GAME OVER";
 char scoreMsg[] = "SCORE";
 void ADC_In89(int data[2]);
 void outHighScore(int hscore);
+char playAgainMsg[] = "PLAY AGAIN";
+char exitMsg[] = "EXIT";
 
 //int size33;
 //size = ADCvalue[0];
@@ -37,9 +44,10 @@ void generateMenu(void){
 	int menu_num = 0;
 	
 	ST7735_FillScreen(0x0000); 
-	ST7735_DrawString(3, 4, playMenuString, 0xFFE0);	//PLAY STRING
-	ST7735_DrawString(3, 6, diffiMenuString, 0xFFE0);	//DIFFI STRING
-	ST7735_DrawString(3, 8, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
+	ST7735_DrawBitmap(12, 60, SpaceLogo, 110,57);
+	ST7735_DrawString(3, 8, playMenuString, 0xFFE0);	//PLAY STRING
+	ST7735_DrawString(3, 10, diffiMenuString, 0xFFE0);	//DIFFI STRING
+	ST7735_DrawString(3, 12, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
 	
 	while(1){	
 			
@@ -69,9 +77,9 @@ void generateMenu(void){
 			if(screen_num == menu_screen && menu_num == menu_play && (up_down>2000 && up_down<2100)){
 				//draw black box
 				//draw play pic
-				ST7735_DrawString(3, 4, playMenuString, 0x0000);	//PLAY STRING
+				ST7735_DrawString(3, 8, playMenuString, 0x0000);	//PLAY STRING
 				Delay100ms(5);
-				ST7735_DrawString(3, 4, playMenuString, 0xFFE0);	//PLAY STRING
+				ST7735_DrawString(3, 8, playMenuString, 0xFFE0);	//PLAY STRING
 				Delay100ms(5);
 				if((buttonPress>>4)==1){
 					screen_num = 3;
@@ -82,9 +90,9 @@ void generateMenu(void){
 			if(screen_num == menu_screen && menu_num == menu_diff && (up_down>2000 && up_down<2100)){
 				//draw black box
 				//draw difficulty pic
-				ST7735_DrawString(3, 6, diffiMenuString, 0x0000);	//DIFFI STRING
+				ST7735_DrawString(3, 10, diffiMenuString, 0x0000);	//DIFFI STRING
 				Delay100ms(5);
-				ST7735_DrawString(3, 6, diffiMenuString, 0xFFE0);	//DIFFI STRING
+				ST7735_DrawString(3, 10, diffiMenuString, 0xFFE0);	//DIFFI STRING
 				Delay100ms(5);
 				if((buttonPress>>4)==1){
 					screen_num = 1;
@@ -94,9 +102,9 @@ void generateMenu(void){
 			if(screen_num == menu_screen && menu_num == menu_high && (up_down>2000 && up_down<2100)){
 				//draw black box
 				//draw highscore pic
-				ST7735_DrawString(3, 8, highscoreMenuString, 0x0000);	//HIGH SCORE STRING
+				ST7735_DrawString(3, 12, highscoreMenuString, 0x0000);	//HIGH SCORE STRING
 				Delay100ms(5);
-				ST7735_DrawString(3, 8, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
+				ST7735_DrawString(3, 12, highscoreMenuString, 0xFFE0);	//HIGH SCORE STRING
 				Delay100ms(5);
 				if((buttonPress>>4)==1){
 					screen_num = 2;
@@ -151,6 +159,15 @@ void generateDiffi(void){
 		Delay100ms(5);
 		ST7735_DrawString(3, 4, diffiEasy, 0xFFE0);	//EASY STRING
 		Delay100ms(5);
+		if((buttonPress>>4)==1){
+			ST7735_FillScreen(0x0000);
+			ST7735_DrawString(4, 4, diffSet, 0xFFE0);
+			ST7735_DrawString(4, 6, diffiEasy, 0xFFE0);
+			Delay100ms(20);
+					diffi = 0;
+					screen_num = 0;
+					checkSN();
+			}
 
 		}
 		if(diffi_num == 1 && (up_down>2000 && up_down<2100)){
@@ -160,6 +177,15 @@ void generateDiffi(void){
 			Delay100ms(5);
 			ST7735_DrawString(3, 6, diffiMed, 0xFFE0);	//MED STRING
 			Delay100ms(5);
+			if((buttonPress>>4)==1){
+				ST7735_FillScreen(0x0000);
+				ST7735_DrawString(4, 4, diffSet, 0xFFE0);
+				ST7735_DrawString(4, 6, diffiMed, 0xFFE0);
+				Delay100ms(20);
+					diffi = 1;
+					screen_num = 0;
+					checkSN();
+			}
 		}
 		if(diffi_num == 2 && (up_down>2000 && up_down<2100)){
 			//draw black box
@@ -168,6 +194,15 @@ void generateDiffi(void){
 			Delay100ms(5);
 			ST7735_DrawString(3, 8, diffiHard, 0xFFE0);	//HARD STRING
 			Delay100ms(5);
+			if((buttonPress>>4)==1){
+				ST7735_FillScreen(0x0000); 
+				ST7735_DrawString(4, 4, diffSet, 0xFFE0);
+				ST7735_DrawString(4, 6, diffiHard, 0xFFE0);
+				Delay100ms(20);
+					diffi = 2;
+					screen_num = 0;
+					checkSN();
+			}
 		}
 		if(diffi_num == 3 && (up_down>2000 && up_down<2100)){
 			//draw black box
@@ -179,7 +214,7 @@ void generateDiffi(void){
 			if((buttonPress>>4)==1){
 					screen_num = 0;
 					checkSN();
-				}
+			}
 		}
 	}
 }
@@ -190,6 +225,7 @@ void generateHS(void){
 
 void generatePlay(void){
 	
+	Output_Init();
 	ST7735_FillScreen(0x0000);
 	EdgeInterrupt_Init();
 	startEngine();
@@ -197,13 +233,58 @@ void generatePlay(void){
 }
 
 void generateGameOver(void){
+	
+	int playAgainNum = 0;
+	SysTick_Init();
+	TIMER3_CTL_R = 0x00000000;
 	Output_Init();
 	ST7735_FillScreen(0x0000);
 	ST7735_DrawString(6, 6, gameOverMsg, 0xFFE0);	//GAMEOVER STRING
-	Delay100ms(20);
+	Delay100ms(30);
 	ST7735_FillScreen(0x0000);
-	ST7735_DrawString(6, 6, scoreMsg, 0xFFE0);	//GAMEOVER STRING
+	ST7735_DrawString(7, 2, scoreMsg, 0xFFE0);	//GAMEOVER STRING
 	outHighScore(score);
+	ST7735_DrawString(5, 8, playAgainMsg, 0xFFE0);
+	ST7735_DrawString(5, 10, exitMsg, 0xFFE0);
+	
+	while(1){
+		
+		if(playAgainNum == 0 && up_down<1500){
+			playAgainNum = 1;
+			while(up_down<1500);
+		}
+		if(playAgainNum == 1 && up_down>3500){
+			playAgainNum= 0;
+			while(up_down>3500);
+		}
+		
+		if(playAgainNum == 0 && (up_down>2000 && up_down<2100)){
+			//draw black box
+			//draw play pic
+			ST7735_DrawString(5, 8, playAgainMsg, 0x0000);	//EASY STRING
+			Delay100ms(5);
+			ST7735_DrawString(5, 8, playAgainMsg, 0xFFE0);	//EASY STRING
+			Delay100ms(5);
+			if((buttonPress>>4)==1){
+						screen_num = 3;
+						checkSN();
+			}
+		}
+		if(playAgainNum == 1 && (up_down>2000 && up_down<2100)){
+			//draw black box
+			//draw difficulty pic
+			ST7735_DrawString(5, 10, exitMsg, 0x0000);	//MED STRING
+			Delay100ms(5);
+			ST7735_DrawString(5, 10, exitMsg, 0xFFE0);	//MED STRING
+			Delay100ms(5);
+			if((buttonPress>>4)==1){
+					screen_num = 0;
+					checkSN();
+				}
+		}
+	}
+		
+		
 }
 
 void outHighScore(int hscore){
@@ -234,7 +315,7 @@ void outHighScore(int hscore){
 	hex_base2 = hex_base+dummy_score;
 	score[2] = hex_base2;
 
-	ST7735_DrawString(6, 8, score, 0xFFE0); // draws score
+	ST7735_DrawString(7, 4, score, 0xFFE0); // draws score
 }
 	
 
