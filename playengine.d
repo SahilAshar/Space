@@ -1,7 +1,7 @@
 .\playengine.o: playEngine.c
 .\playengine.o: ADC.h
-.\playengine.o: tm4c123gh6pm.h
 .\playengine.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\playengine.o: tm4c123gh6pm.h
 .\playengine.o: ST7735.h
 .\playengine.o: DAC.h
 .\playengine.o: Timer0.h

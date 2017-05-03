@@ -7,55 +7,43 @@ C:\Users\sahil\Documents\GitHub\319K Labs\lab10-ashar-and-collins\SpaceInvaders.
 Project File Date:  05/02/2017
 
 <h2>Output:</h2>
-Rebuild target 'SpaceInvaders'
-assembling startup.s...
-assembling random.s...
-compiling DAC.c...
-DAC.c(34): warning:  #550-D: variable "cycle" was set but never used
-        uint32_t cycle=0;
-DAC.c(118): warning:  #550-D: parameter "PeriodicTask" was set but never used
-  void Timer1_Init(void(*PeriodicTask)(void),uint32_t period){
-DAC.c: 2 warnings, 0 errors
-compiling ADC.c...
-compiling Timer0.c...
-compiling Timer1.c...
-compiling Sound.c...
-assembling LCD.s...
-assembling Print.s...
-compiling SpaceInvaders.c...
-compiling ST7735.c...
-compiling engine.c...
-compiling menu.c...
-compiling Globals.c...
-compiling moving.c...
-compiling movement.c...
-movement.c(13): warning:  #223-D: function "ADC_In89" declared implicitly
-        ADC_In89(ADCvalue);
-movement.c: 1 warning, 0 errors
-compiling Images.c...
+Build target 'SpaceInvaders'
 compiling playEngine.c...
-playEngine.c(369): warning:  #1-D: last line of file ends without a newline
+playEngine.c(170): warning:  #223-D: function "Timer1_Init" declared implicitly
+                                        Timer1_Init(Sound_Killed, 7256);
+playEngine.c(172): warning:  #223-D: function "WaitForInterrupt" declared implicitly
+                                                WaitForInterrupt();
+playEngine.c(227): warning:  #223-D: function "Timer1_Init" declared implicitly
+                                        Timer1_Init(Sound_Killed, 7256);
+playEngine.c(229): warning:  #223-D: function "WaitForInterrupt" declared implicitly
+                                                WaitForInterrupt();
+playEngine.c(290): warning:  #223-D: function "Timer1_Init" declared implicitly
+                                        Timer1_Init(Sound_Killed, 7256);
+playEngine.c(292): warning:  #223-D: function "WaitForInterrupt" declared implicitly
+                                                WaitForInterrupt();
+playEngine.c(345): warning:  #223-D: function "Timer1_Init" declared implicitly
+                                        Timer1_Init(Sound_Killed, 7256);
+playEngine.c(347): warning:  #223-D: function "WaitForInterrupt" declared implicitly
+                                                WaitForInterrupt();
+playEngine.c(439): warning:  #1-D: last line of file ends without a newline
   }
-playEngine.c: 1 warning, 0 errors
+playEngine.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=9308 RO-data=5020 RW-data=1212 ZI-data=1180  
-".\SpaceInvaders.axf" - 0 Error(s), 4 Warning(s).
+Program Size: Code=10328 RO-data=20780 RW-data=1396 ZI-data=1180  
+".\SpaceInvaders.axf" - 0 Error(s), 9 Warning(s).
 Load "C:\\Users\\sahil\\Documents\\GitHub\\319K Labs\\lab10-ashar-and-collins\\SpaceInvaders.axf" 
 Connecting: Mode=JTAG, Speed=1000000Hz
 Erase Done.
 Programming Done.
 Verify OK.
-</pre>
-</body>
-</html>
-39): warning:  #223-D: function "Sound_Killed" declared implicitly
-                                                Sound_Killed();
-playEngine.c(263): warning:  #223-D: function "Random" declared implicitly
-        rando=(Random()&0x0000007F);
-playEngine.c: 7 warnings, 0 errors
+ Done.
+Verify OK.
+gine.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=8812 RO-data=20456 RW-data=1204 ZI-data=1180  
-".\SpaceInvaders.axf" - 0 Error(s), 8 Warning(s).
-king...
-Program Size: Code=8812 RO-data=20456 RW-data=1204 ZI-data=1180  
-".\SpaceInvaders.axf" - 0 Error(s), 9 Warning(s).
+Program Size: Code=10372 RO-data=20780 RW-data=1396 ZI-data=1180  
+".\SpaceInvaders.axf" - 0 Error(s), 11 Warning(s).
+Load "C:\\Users\\sahil\\Documents\\GitHub\\319K Labs\\lab10-ashar-and-collins\\SpaceInvaders.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.

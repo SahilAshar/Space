@@ -115,9 +115,9 @@ void Timer0A_Handler(void){
 	TIMER0_ICR_R = TIMER_ICR_TATOCINT;// acknowledge TIMER0A timeout
 }
 
-void Timer1_Init(void(*PeriodicTask)(void),uint32_t period){
+void Timer1_Init(void(*task)(void),uint32_t period){
   SYSCTL_RCGCTIMER_R |= 0x02;   // 0) activate TIMER1         // user function
-	PeriodicTask=*tempointerrupt;
+	PeriodicTask=task;
 	TIMER1_CTL_R = 0x00000000;    // 1) disable TIMER1A during setup
   TIMER1_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
   TIMER1_TAMR_R = 0x00000002;   // 3) configure for periodic mode, default down-count settings

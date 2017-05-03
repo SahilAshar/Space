@@ -13,16 +13,16 @@ void shipMovement(void){
 	ADC_In89(ADCvalue);
 	if((ADCvalue[0]<1500)&&(hori>0)){
 		hori--;
-		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		ST7735_DrawBitmap(hori, verti, PlayerShip1, 18, 9);
 		Delay50ms(1);
 	}
 	else if(ADCvalue[0]>3500&&(hori<109)){
 		hori++;
-		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		ST7735_DrawBitmap(hori, verti, PlayerShip1, 18,9);
 		Delay50ms(1);
 	}
 	else if((ADCvalue[1]<3500)||(ADCvalue[0]>1500)){
-		ST7735_DrawBitmap(hori, verti, PlayerShip0, 18,8);
+		ST7735_DrawBitmap(hori, verti, PlayerShip1, 18,9);
 		Delay50ms(1);
 	}
 	

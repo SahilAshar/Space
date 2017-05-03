@@ -29,6 +29,7 @@ extern const unsigned short SmallEnemy30pointB[];
 // includes two blacked out columns on the left and right sides of the image to prevent smearing when moved 2 pixels to the left or right
 // width=18 x height=8
 extern const unsigned short PlayerShip0[];
+extern const unsigned short PlayerShip1[];
 
 // small shield floating in space to cover the player's ship from enemy fire (undamaged)
 // width=18 x height=5

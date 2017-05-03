@@ -8,6 +8,7 @@
 #include "Sound.h"
 #include "DAC.h"
 #include "tm4c123gh6pm.h"
+#include "ADC.h"
 const uint8_t shoot[4080] = {
   129, 99, 103, 164, 214, 129, 31, 105, 204, 118, 55, 92, 140, 225, 152, 61, 84, 154, 184, 101, 
   75, 129, 209, 135, 47, 94, 125, 207, 166, 72, 79, 135, 195, 118, 68, 122, 205, 136, 64, 106, 
@@ -1139,7 +1140,7 @@ const uint8_t highpitch[1802] = {
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
 void WaitForInterrupt(void);
-uint8_t data;
+
 	void Sound_Init(void){
 	DAC_Init();
 	NVIC_ST_CTRL_R = 0;         // disable SysTick during setup
@@ -1149,14 +1150,7 @@ uint8_t data;
 	NVIC_ST_CTRL_R = 0x07; 			//enables interrupts
 	
 };
-void Sound_Play(const uint8_t *pt, uint32_t count){
-	for(int i=0;i<count-1;i++){
-		data=*pt;
-		WaitForInterrupt();
-		pt++;
-	}
-	
-};
+
 void Sound_Shoot(void){
 	Sound_Play(shoot, 4080);
 };

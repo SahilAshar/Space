@@ -64,7 +64,7 @@ invade_s matrix [36]={
 };
 
 void generateShip(void){
-	ST7735_DrawBitmap(52, 159, PlayerShip0, 18,8); // player ship middle bottom
+	ST7735_DrawBitmap(52, 159, PlayerShip1, 18,9); // player ship middle bottom
 	ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
 }
 
@@ -150,6 +150,7 @@ void startEngine(void){
 void alien_movement (void){
 	uint32_t flag=0;
 	//right shift
+	done=0;
 	shipMovement();
 	while(matrix[35].x<109){
 		for(int i=35;i>=0;i--){
@@ -164,10 +165,18 @@ void alien_movement (void){
 					flag=0;
 					shotFired_ticks = 0;
 					invaderDeaths++;
+					while(done==0){
+					sound_flag=0;
+					Timer1_Init(Sound_Killed, 7256);
+					while(sound_flag==0){
+						WaitForInterrupt();
+					}
+					}
 					if(invaderDeaths == 36){
 						screen_num = gameOver_screen;
 						return;
 					}				
+					TIMER1_CTL_R =0;
 				}
 			}
 		}
@@ -199,7 +208,8 @@ void alien_movement (void){
 	
 
 //drop down
-	shipMovement();
+	done=0;
+		shipMovement();
 	for(int i=35;i>=0;i--){
 			for(int j=35;j>=0;j--){
 			if(((bullet_l[0].x<matrix[j].x+16)&&bullet_l[0].x>matrix[j].x)&&((bullet_l[0].y>matrix[j].y-10)&&bullet_l[0].y<matrix[j].y)){
@@ -212,10 +222,18 @@ void alien_movement (void){
 					flag=0;
 					shotFired_ticks = 0;
 					invaderDeaths++;
+					while(done==0){
+					sound_flag=0;
+					Timer1_Init(Sound_Killed, 7256);
+					while(sound_flag==0){
+						WaitForInterrupt();
+					}
+					}
 					if(invaderDeaths == 36){
 						screen_num = gameOver_screen;
 						return;
-					}		
+					}				
+					TIMER1_CTL_R =0;
 				}
 			}
 		}
@@ -228,7 +246,7 @@ void alien_movement (void){
 						//Sound_Killed();
 						//shotFired_ticks = 0;
 						ST7735_FillRect(bullet_l[0].x,bullet_l[0].y,3,11,0x0000);
-						NVIC_ST_CTRL_R=0;
+						
 					}
 			}
 		}
@@ -251,6 +269,7 @@ void alien_movement (void){
 
 
 //	left shift
+	done=0;
 	shipMovement();
 	while(matrix[0].x>0){
 
@@ -266,10 +285,18 @@ void alien_movement (void){
 					flag=0;
 					shotFired_ticks = 0;
 					invaderDeaths++;
+					while(done==0){
+					sound_flag=0;
+					Timer1_Init(Sound_Killed, 7256);
+					while(sound_flag==0){
+						WaitForInterrupt();
+					}
+					}
 					if(invaderDeaths == 36){
 						screen_num = gameOver_screen;
 						return;
-					}		
+					}				
+					TIMER1_CTL_R =0;
 				}
 			}
 		}
@@ -281,7 +308,6 @@ void alien_movement (void){
 						//Sound_Killed();
 						//shotFired_ticks = 0;
 						ST7735_FillRect(bullet_l[0].x,bullet_l[0].y,3,11,0x0000);
-						NVIC_ST_CTRL_R=0;
 					}
 				}
 			}
@@ -300,6 +326,7 @@ void alien_movement (void){
 	}
 	
 	//drop down 
+	done=0;
 	shipMovement();
 	for(int i=35;i>=0;i--){
 			for(int j=35;j>=0;j--){
@@ -313,10 +340,18 @@ void alien_movement (void){
 					flag=0;
 					shotFired_ticks = 0;
 					invaderDeaths++;
+					while(done==0){
+					sound_flag=0;
+					Timer1_Init(Sound_Killed, 7256);
+					while(sound_flag==0){
+						WaitForInterrupt();
+					}
+					}
 					if(invaderDeaths == 36){
 						screen_num = gameOver_screen;
 						return;
-					}		
+					}				
+					TIMER1_CTL_R =0;
 				}
 			}
 		}
@@ -329,7 +364,7 @@ void alien_movement (void){
 						//Sound_Killed();
 						//shotFired_ticks = 0;
 						ST7735_FillRect(bullet_l[0].x,bullet_l[0].y,3,11,0x0000);
-						NVIC_ST_CTRL_R=0;
+
 					}
 			}
 		}
@@ -370,7 +405,7 @@ void alien_bullets (void){
 	if(rando<=35){
 		z=rando;
 	}
-	Timer0_Init(bullet_movement, 80000);
+	Timer0_Init(bullet_movement, 3000000);
 	if(((matrix[z+6].dead==1)&&(z<=29))||(z<=35&&z>=30)){
 		for(int j=0;j<6;j++){
 			if(bullet_t[j].loaded==0){

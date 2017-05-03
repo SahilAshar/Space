@@ -3,7 +3,22 @@
 #include "movement.h"
 #include "ADC.h"
 #include "Globals.h"
+uint32_t idk=0;
+uint32_t done;
+uint8_t data;
+uint32_t sound_flag;
 
+void Sound_Play(const uint8_t *pt, uint32_t count){
+	data=pt[idk];
+	GPIO_PORTB_DATA_R=data;
+	idk++;
+	if(idk==count){
+		done=1;
+		idk=0;
+	
+	}
+	sound_flag=1;
+};
 
 
 void ADC_Init89(void){ 
@@ -110,7 +125,7 @@ void Timer3_Init(void){
 	TIMER3_CTL_R = 0x00000000;		// 1) disable timer3 during setup
 	TIMER3_CFG_R = 0x00000000;		// 2) configure 32 bit timer mode
 	TIMER3_TAMR_R = 0x00000002;		// 3) configure for periodic mode
-	TIMER3_TAILR_R = 200000-1;		// 4) reload value
+	TIMER3_TAILR_R = 2000000-1;		// 4) reload value
 	TIMER3_TAPR_R = 0;						// 5) 12.5ns timer3
 	TIMER3_ICR_R = 0x00000001;		// 6) clear timer3 timeout flag
 	TIMER3_IMR_R |= 0x00000001;		// 7) arm timeout interrupt
